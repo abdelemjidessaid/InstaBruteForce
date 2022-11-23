@@ -1,6 +1,7 @@
 ## InstaBruteForce<br>
 
-> Brute Force Attack on Instagram Accounts with **Java**<br>
+> Brute Force Attack on Instagram Accounts with __Java__.<br>
+
 1- Download an ####IDE, for example (Intellij Idea).<br>
 
 2- Download chromedriver.exe (the same version number of your Chrome brwoser) and move it into this path > "C:/webdrivers/chromedriver.exe".<br>
