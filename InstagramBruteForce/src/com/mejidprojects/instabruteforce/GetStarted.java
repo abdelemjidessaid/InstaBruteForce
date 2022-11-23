@@ -2,12 +2,14 @@ package com.mejidprojects.instabruteforce;
 
 import java.util.Scanner;
 
-public class Main {
+public class GetStarted {
 
     public static void main(String[] args) {
 	    // write your code here
         Scanner input = new Scanner(System.in);
         String username, wordlistPath;
+        final String chromeDriver = "C:\\webdrivers\\chromedriver.exe";
+
         do {
             // input username & password
             System.out.print("Enter username > ");
@@ -18,7 +20,7 @@ public class Main {
         }
         while (username.isEmpty() || wordlistPath.isEmpty());
 
-        InstaBrute brute = new InstaBrute(username, wordlistPath);
+        InstaBrute brute = new InstaBrute(username, wordlistPath, chromeDriver);
         brute.startBruteForce();
     }
 }
